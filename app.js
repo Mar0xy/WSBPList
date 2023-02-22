@@ -87,7 +87,7 @@ if (!file) {
             await fs.rmSync(`${path.dirname(__filename)}/remote-${path.parse(file).name}.bplist`);
             console.log(`Updated Successfully! Please move ${filename} into your Playlists folder.`);
         } else {
-            console.log('Playist is up to date.');
+            console.log('Playlist is up to date.');
             
             await fs.rmSync(`${path.dirname(__filename)}/remote-${path.parse(file).name}.bplist`);
             process.exit(0);
