@@ -59,9 +59,9 @@ if (!file) {
         const remolist = JSON.parse(await fs.readFileSync(`${path.dirname(__filename)}/remote-${path.parse(file).name}.bplist`));
 
         if (remolist.songs[remolist.songs.length-1].hash != bpllocalc.songs[bpllocalc.songs.length-1].hash) {
-            const newfile = JSON.parse(JSON.stringify(deepmerge(remolist, bpllocalc)));
-
-            await fs.writeFileSync(`${path.dirname(__filename)}/${filename}`, JSON.stringify(newfile, null, 4));
+            const newfile = JSON.parse(JSON.stringify(deepmerge(remolist.songs[remolist.songs.length-1], bpllocalc.songs)));
+            bpllocalc.songs = newfile;
+            await fs.writeFileSync(`${path.dirname(__filename)}/${filename}`, JSON.stringify(bpllocalc, null, 4));
 
             console.log(`Updated playlist successfully`);
 
@@ -78,7 +78,7 @@ if (!file) {
                     {
                       message: upmsg,
                       files: {
-                        [`${filename}`]: Buffer.from(JSON.stringify(newfile, null, 4)).toString('base64')
+                        [`${filename}`]: Buffer.from(JSON.stringify(bpllocalc, null, 4)).toString('base64')
                       }
                     },
                 ]
@@ -87,7 +87,7 @@ if (!file) {
             await fs.rmSync(`${path.dirname(__filename)}/remote-${path.parse(file).name}.bplist`);
             console.log(`Updated Successfully! Please move ${filename} into your Playlists folder.`);
         } else {
-            console.log('Playlist is up to date.');
+            console.log('Playist is up to date.');
             
             await fs.rmSync(`${path.dirname(__filename)}/remote-${path.parse(file).name}.bplist`);
             process.exit(0);
